@@ -86,10 +86,10 @@ const config: Options = {
     [
       '@semantic-release/github',
       {
-        successComment: 'Released in version ${nextRelease.version} :tada:',
+        successComment: false,
         failTitle: false,
         assets: [{ path: 'dist/**', label: 'Web Application Build' }],
-        addReleases: 'bottom',
+        addReleases: false,
       },
     ],
     'semantic-release-export-data',

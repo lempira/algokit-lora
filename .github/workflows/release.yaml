@@ -53,7 +53,7 @@ jobs:
       release-version: ${{ steps.generate-release-version.outputs.release-version }}
       release-tag: ${{ steps.generate-release-version.outputs.release-tag }}
       release-id: ${{ steps.generate-release-version.outputs.release-id }}
-      crabnebula-release-id: ${{ steps.get-crabnebula-release-id.outputs.release-id }}
+      # crabnebula-release-id: ${{ steps.get-crabnebula-release-id.outputs.release-id }}
     steps:
       - name: Generate bot token
         uses: actions/create-github-app-token@v1
@@ -189,23 +189,32 @@ jobs:
 
           echo "✅ Successfully synced $VERSION to main branch"
 
-  release-web:
-    name: Release Web
+  dummy-release:
+    name: Dummy Release
+    runs-on: ubuntu-latest
     needs: [build-and-release]
     if: github.ref_name == 'release'
-    uses: ./.github/workflows/release-web.yaml
-    with:
-      version: ${{ needs.build-and-release.outputs.release-version }}
-    secrets: inherit
+    steps:
+      - name: Dummy release
+        run: echo "Dummy release ${{ needs.build-and-release.outputs.release-version }}"
+  
+  # release-web:
+  #   name: Release Web
+  #   needs: [build-and-release]
+  #   if: github.ref_name == 'release'
+  #   uses: ./.github/workflows/release-web.yaml
+  #   with:
+  #     version: ${{ needs.build-and-release.outputs.release-version }}
+  #   secrets: inherit
 
-  release-desktop:
-    name: Release Desktop
-    needs: [build-and-release]
-    if: github.ref_name == 'release'
-    uses: ./.github/workflows/release-desktop.yaml
-    with:
-      version: ${{ needs.build-and-release.outputs.release-version }}
-      production-release: ${{ github.ref_name == 'release' }}
-      release-tag: ${{ needs.build-and-release.outputs.release-tag }}
-      crabnebula-release-id: ${{ needs.build-and-release.outputs.crabnebula-release-id }}
-    secrets: inherit
+  # release-desktop:
+  #   name: Release Desktop
+  #   needs: [build-and-release]
+  #   if: github.ref_name == 'release'
+  #   uses: ./.github/workflows/release-desktop.yaml
+  #   with:
+  #     version: ${{ needs.build-and-release.outputs.release-version }}
+  #     production-release: ${{ github.ref_name == 'release' }}
+  #     release-tag: ${{ needs.build-and-release.outputs.release-tag }}
+  #     crabnebula-release-id: ${{ needs.build-and-release.outputs.crabnebula-release-id }}
+  #   secrets: inherit
