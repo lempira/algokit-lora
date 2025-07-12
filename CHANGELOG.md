@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.0.0-beta.1](https://github.com/lempira/algokit-lora/compare/v3.1.0...v4.0.0-beta.1) (2025-07-12)
+
+### ⚠ BREAKING CHANGES
+
+* a feature BREAKING CHANGE test
+
+### 🚀 Features
+
+* a feature BREAKING CHANGE test ([647e224](https://github.com/lempira/algokit-lora/commit/647e224b009c3fbaf5a6f5d1feb0cec84ae2ced0))
+
 ## [3.1.0](https://github.com/lempira/algokit-lora/compare/v3.0.0...v3.1.0) (2025-07-12)
 
 ### 🚀 Features
