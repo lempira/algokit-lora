@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.1.0-beta.2](https://github.com/lempira/algokit-lora/compare/v3.1.0-beta.1...v3.1.0-beta.2) (2025-07-12)
+
+### 🚀 Features
+
+* a feature bump test 2 ([0e4955e](https://github.com/lempira/algokit-lora/commit/0e4955eaf746bb8de1b46fe008ac99acd40ef649))
+
+## [3.1.0-beta.1](https://github.com/lempira/algokit-lora/compare/v3.0.0...v3.1.0-beta.1) (2025-07-12)
+
+### 🚀 Features
+
+* a feature bump test ([117f737](https://github.com/lempira/algokit-lora/commit/117f737623fcfc88583674ae404f6a5c35c3f316))
+
 ## [3.0.0](https://github.com/lempira/algokit-lora/compare/v2.0.0...v3.0.0) (2025-07-12)
 
 ### ⚠ BREAKING CHANGES
