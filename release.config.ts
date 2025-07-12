@@ -30,15 +30,11 @@ const config: Options = {
         preset: 'conventionalcommits',
         releaseRules: [
           ...specialReleaseRules, // more specific first
-          { breaking: true, release: 'major' },
           ...Object.entries(commitTypes).map(([type, config]) => ({
             type,
             release: config.release,
           })),
         ],
-        parserOpts: {
-          noteKeywords: ['BREAKING CHANGE', 'BREAKING CHANGES', 'BREAKING'],
-        },
       },
     ],
     [
@@ -51,9 +47,6 @@ const config: Options = {
             section: config.section,
             hidden: config.hidden,
           })),
-        },
-        parserOpts: {
-          noteKeywords: ['BREAKING CHANGE', 'BREAKING CHANGES', 'BREAKING'],
         },
         writerOpts: {
           groupBy: 'type',
