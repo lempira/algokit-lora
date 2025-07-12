@@ -30,6 +30,7 @@ const config: Options = {
         preset: 'conventionalcommits',
         releaseRules: [
           ...specialReleaseRules, // more specific first
+          { breaking: true, release: 'major' },
           ...Object.entries(commitTypes).map(([type, config]) => ({
             type,
             release: config.release,
