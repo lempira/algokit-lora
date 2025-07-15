@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.1.0](https://github.com/lempira/algokit-lora/compare/v4.0.0...v4.1.0) (2025-07-15)
+
+### 🐛 Bug Fixes
+
+* linting errors ([56b4ea4](https://github.com/lempira/algokit-lora/commit/56b4ea4356d8ea1eba73e452cd398f5ab896475b))
+* update release config to only run on release and not main ([93ace41](https://github.com/lempira/algokit-lora/commit/93ace415de6125d671f29547618bc0cde8266144))
+
+### 🚀 Features
+
+* minor bump test ([0a1c69c](https://github.com/lempira/algokit-lora/commit/0a1c69ca8ec98ee1982c07cf29b1b2355c2b0242))
+
 ## [4.0.0](https://github.com/lempira/algokit-lora/compare/v3.1.0...v4.0.0) (2025-07-12)
 
 ### ⚠ BREAKING CHANGES
