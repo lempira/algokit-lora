@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import type { Options } from 'semantic-release'
 
 // =============================================================================
@@ -26,9 +27,13 @@ const specialReleaseRules = [{ type: 'docs', scope: 'readme', release: 'patch' }
 // BRANCH DETECTION UTILITY
 // =============================================================================
 
+type GlobalWithProcess = typeof globalThis & {
+  process?: { env: Record<string, string> }
+}
+
 function getCurrentBranch(): string {
   // Try to get branch from environment variables (most CI/CD systems)
-  const env = (globalThis as any).process?.env || {}
+  const env = (globalThis as GlobalWithProcess).process?.env || {}
   const branchFromEnv = env.GITHUB_REF_NAME
 
   if (branchFromEnv) {
@@ -39,7 +44,7 @@ function getCurrentBranch(): string {
   try {
     const { execSync } = eval('require')('child_process')
     return execSync('git rev-parse --abbrev-ref HEAD', { encoding: 'utf8' }).trim()
-  } catch (error) {
+  } catch {
     console.warn('Could not determine current branch, defaulting to main')
     return 'main'
   }
@@ -126,13 +131,13 @@ function createConfig(): Options {
   // Only add changelog plugin on release branch
   if (currentBranch === 'release') {
     console.log('🔄 Adding changelog plugin for release branch')
-    
+
     // Insert changelog plugin after release-notes-generator but before npm
     const plugins = [...config.plugins!]
-    const releaseNotesIndex = plugins.findIndex(plugin => 
-      Array.isArray(plugin) && plugin[0] === '@semantic-release/release-notes-generator'
+    const releaseNotesIndex = plugins.findIndex(
+      (plugin) => Array.isArray(plugin) && plugin[0] === '@semantic-release/release-notes-generator'
     )
-    
+
     plugins.splice(releaseNotesIndex + 1, 0, [
       '@semantic-release/changelog',
       {
