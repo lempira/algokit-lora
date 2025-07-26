@@ -130,7 +130,7 @@ jobs:
         id: create-crabnebula-release
         # if: env.IS_PRODUCTION_RELEASE == 'true'
         with:
-          command: release draft ${{ env.IS_PRODUCTION_RELEASE != 'true' && '--channel beta' || '' }} ${{ secrets.CN_ORG_NAME }}/${{ secrets.CN_APP_NAME }} "${{ steps.generate-release-version.outputs.release-version }}"
+          command: release draft ${{ env.IS_PRODUCTION_RELEASE != 'true' && '--channel beta' || '' }} ${{ secrets.CN_ORG_NAME }}/${{ secrets.CN_APP_NAME }} ${{ steps.generate-release-version.outputs.release-version }}
           api-key: ${{ secrets.CN_API_KEY }}
 
       - name: Get CrabNebula release ID
