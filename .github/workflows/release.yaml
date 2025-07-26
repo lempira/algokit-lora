@@ -119,7 +119,11 @@ jobs:
       - name: Debug CrabNebula release command
         # if: env.IS_PRODUCTION_RELEASE == 'true'
         run: |
-          echo "Running command: release draft ${{ secrets.CN_ORG_NAME }}/${{ secrets.CN_APP_NAME }} ${{ steps.generate-release-version.outputs.release-version }} ${{ env.IS_PRODUCTION_RELEASE != 'true' && '--channel beta' || '' }}"
+          echo "generate-release-version outputs:"
+          echo "release-version: ${{ steps.generate-release-version.outputs.release-version }}"
+          echo "release-tag: ${{ steps.generate-release-version.outputs.release-tag }}"
+          echo "release-notes: ${{ steps.generate-release-version.outputs.release-notes }}"
+          echo "release-channel: ${{ steps.generate-release-version.outputs.release-channel }}"
 
       - name: Create draft CrabNebula release
         uses: crabnebula-dev/cloud-release@v0.2.0
