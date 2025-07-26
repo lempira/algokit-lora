@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.1.0](https://github.com/lempira/algokit-lora/compare/v2.0.1...v2.1.0) (2025-07-26)
+
+### 🚀 Features
+
+* bumped the minor version ([a8c4b6a](https://github.com/lempira/algokit-lora/commit/a8c4b6ad5647426c8896cb15cf2863712ae6ec15))
+* test minor bump ([b041968](https://github.com/lempira/algokit-lora/commit/b04196871b28ed748e5119778aad17fabfe6ba70))
+* test minor bump test ([c007f3c](https://github.com/lempira/algokit-lora/commit/c007f3c200378e49d04b0ebf27b826c89a8dc43f))
+* test minor bump test class 2 ([18617a8](https://github.com/lempira/algokit-lora/commit/18617a84fdbd54ed5b52665be681f9e7c1dedbb8))
+
 ## [2.0.1](https://github.com/algorandfoundation/algokit-lora/compare/v2.0.0...v2.0.1) (2025-07-25)
 
 ### 🐛 Bug Fixes
