@@ -121,6 +121,8 @@ jobs:
         id: create-crabnebula-release
         if: env.IS_PRODUCTION_RELEASE == 'true'
         with:
+          run: |
+            echo "Running command: release draft ${{ secrets.CN_ORG_NAME }}/${{ secrets.CN_APP_NAME }} ${{ steps.generate-release-version.outputs.release-version }} ${{ env.IS_PRODUCTION_RELEASE != 'true' && '--channel beta' || '' }}"
           command: release draft ${{ secrets.CN_ORG_NAME }}/${{ secrets.CN_APP_NAME }} ${{ steps.generate-release-version.outputs.release-version }} ${{ env.IS_PRODUCTION_RELEASE != 'true' && '--channel beta' || '' }}
           api-key: ${{ secrets.CN_API_KEY }}
 
