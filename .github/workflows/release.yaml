@@ -180,7 +180,9 @@ jobs:
           echo "Release commit: $RELEASE_COMMIT"
 
           # Cherry-pick the release commit into main (without merge history)
-          git cherry-pick $RELEASE_COMMIT --no-commit
+          # Use -X theirs to automatically resolve conflicts in favor of the release branch
+          git cherry-pick $RELEASE_COMMIT --no-commit -X theirs
+
           git commit -m "chore: sync stable release $VERSION to main [skip ci]
 
           This commit syncs the stable release version back to main branch
