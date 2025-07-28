@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.3](https://github.com/lempira/algokit-lora/compare/v2.0.2...v2.0.3) (2025-07-28)
+
+### 🐛 Bug Fixes
+
+* npm config ([3119f6d](https://github.com/lempira/algokit-lora/commit/3119f6d3a22334a8a4fb6020b471e45a67f2633e))
+
 ## [2.0.2](https://github.com/lempira/algokit-lora/compare/v2.0.1...v2.0.2) (2025-07-28)
 
 ### 🐛 Bug Fixes
