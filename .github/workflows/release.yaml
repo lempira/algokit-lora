@@ -122,7 +122,6 @@ jobs:
           retention-days: 1
 
       - name: Debug CrabNebula release command
-        # if: env.IS_PRODUCTION_RELEASE == 'true'
         run: |
           echo "generate-release-version outputs:"
           echo "release-version: ${{ steps.generate-release-version.outputs.release-version }}"
