@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.1](https://github.com/lempira/algokit-lora/compare/v2.0.0...v2.0.1) (2025-07-28)
+
+### 🐛 Bug Fixes
+
+* added debug logging ([2ae63fa](https://github.com/lempira/algokit-lora/commit/2ae63fa6f8f42d08940bbbe4a21f9599a553fe81))
+* removed version double quotes ([d25c9fc](https://github.com/lempira/algokit-lora/commit/d25c9fcca90e529816c0d213a27e930cbfcaecc3))
+* run crab nebula workflow for release ([49cea94](https://github.com/lempira/algokit-lora/commit/49cea94deea099e966834b35fab21597b3604c0d))
+
 ## [2.0.0](https://github.com/lempira/algokit-lora/compare/v1.2.0...v2.0.0) (2025-07-26)
 
 ### ⚠ BREAKING CHANGES
