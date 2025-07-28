@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.2](https://github.com/lempira/algokit-lora/compare/v2.0.1...v2.0.2) (2025-07-28)
+
+### 🐛 Bug Fixes
+
+* update workflows for test ([d74d429](https://github.com/lempira/algokit-lora/commit/d74d4298a4ad677144ad3c44da94358828092951))
+
 ## [2.0.1](https://github.com/lempira/algokit-lora/compare/v2.0.0...v2.0.1) (2025-07-28)
 
 ### 🐛 Bug Fixes
