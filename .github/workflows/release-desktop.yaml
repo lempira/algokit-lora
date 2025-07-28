@@ -72,13 +72,10 @@ jobs:
       - name: Install Rust stable
         uses: dtolnay/rust-toolchain@stable
 
-      - name: Debug npm setup
+      - name: Configure npm for GitHub Packages
         run: |
-          echo "Platform: ${{ matrix.platform }}"
-          echo "Registry: $(npm config get registry)"
-          echo "NPM version: $(npm --version)"
-          echo "Node version: $(node --version)"
-          echo "Token exists: ${{ steps.app_token.outputs.token != '' && 'YES' || 'NO' }}"
+          npm config set @algorandfoundation:registry https://npm.pkg.github.com/
+          npm config set //npm.pkg.github.com/:_authToken ${{ steps.app_token.outputs.token }}
 
       - name: Install npm dependencies
         run: npm ci --ignore-scripts
