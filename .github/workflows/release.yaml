@@ -116,19 +116,26 @@ jobs:
           path: dist/
           retention-days: 1
 
+      - name: Debug CrabNebula release command
+        # if: env.IS_PRODUCTION_RELEASE == 'true'
+        run: |
+          echo "generate-release-version outputs:"
+          echo "release-version: ${{ steps.generate-release-version.outputs.release-version }}"
+          echo "release-tag: ${{ steps.generate-release-version.outputs.release-tag }}"
+          echo "release-notes: ${{ steps.generate-release-version.outputs.release-notes }}"
+          echo "release-channel: ${{ steps.generate-release-version.outputs.release-channel }}"
+
       - name: Create draft CrabNebula release
         uses: crabnebula-dev/cloud-release@v0.2.0
         id: create-crabnebula-release
-        if: env.IS_PRODUCTION_RELEASE == 'true'
+        if: steps.generate-release-version.outputs.release-version != '' && env.IS_PRODUCTION_RELEASE == 'true'
         with:
-          run: |
-            echo "Running command: release draft ${{ secrets.CN_ORG_NAME }}/${{ secrets.CN_APP_NAME }} ${{ steps.generate-release-version.outputs.release-version }} ${{ env.IS_PRODUCTION_RELEASE != 'true' && '--channel beta' || '' }}"
           command: release draft ${{ secrets.CN_ORG_NAME }}/${{ secrets.CN_APP_NAME }} ${{ steps.generate-release-version.outputs.release-version }} ${{ env.IS_PRODUCTION_RELEASE != 'true' && '--channel beta' || '' }}
           api-key: ${{ secrets.CN_API_KEY }}
 
       - name: Get CrabNebula release ID
         id: get-crabnebula-release-id
-        if: env.IS_PRODUCTION_RELEASE == 'true'
+        if: steps.generate-release-version.outputs.release-version != '' && env.IS_PRODUCTION_RELEASE == 'true'
         run: echo "release-id=${{ fromJson(steps.create-crabnebula-release.outputs.stdout).id }}" >> $GITHUB_OUTPUT
 
   sync-release-to-main:
