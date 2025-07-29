@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.5](https://github.com/lempira/algokit-lora/compare/v2.0.4...v2.0.5) (2025-07-29)
+
+### 🐛 Bug Fixes
+
+* added permissions to workflow ([5578ef6](https://github.com/lempira/algokit-lora/commit/5578ef657ae770e6f5448be08a2bd47b8a762ec3))
+
 ## [2.0.4](https://github.com/lempira/algokit-lora/compare/v2.0.3...v2.0.4) (2025-07-28)
 
 ### 🐛 Bug Fixes
