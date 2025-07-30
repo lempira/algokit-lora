@@ -67,15 +67,13 @@ env:
   PRODUCTION_RELEASE: ${{ inputs.production-release == 'true' }}
 
 jobs:
-  build-tauri:
-    name: Build Tauri app
-    runs-on: ${{ matrix.platform }}
-    strategy:
-      matrix:
-        # macos-14 is the Apple Arm runner
-        # macos-13 is the Apple Intel runner
-        platform: [ubuntu-22.04, windows-latest, macos-13, macos-14]
-
+  # Generate bot token once before matrix jobs to avoid simultaneous token generation
+  # which can cause 403 Forbidden errors when multiple jobs try to access GitHub Package Registry
+  generate-auth:
+    name: Generate authentication
+    runs-on: ubuntu-latest
+    outputs:
+      bot-token: ${{ steps.app_token.outputs.token }}
     steps:
       - name: Generate bot token
         uses: actions/create-github-app-token@v1
@@ -91,10 +89,21 @@ jobs:
         env:
           APP_TOKEN: ${{ steps.app_token.outputs.token }}
 
+  build-tauri:
+    name: Build Tauri app
+    needs: generate-auth
+    runs-on: ${{ matrix.platform }}
+    strategy:
+      matrix:
+        # macos-14 is the Apple Arm runner
+        # macos-13 is the Apple Intel runner
+        platform: [ubuntu-22.04, windows-latest, macos-13, macos-14]
+
+    steps:
       - uses: actions/checkout@v4
         with:
-          # Use bot token for authenticated operations
-          token: ${{ steps.app_token.outputs.token }}
+          # Use bot token from previous job
+          token: ${{ needs.generate-auth.outputs.bot-token }}
           fetch-depth: 0
 
       - name: Setup node
@@ -108,7 +117,7 @@ jobs:
       - name: Install npm dependencies
         run: npm ci --ignore-scripts
         env:
-          NODE_AUTH_TOKEN: ${{ steps.app_token.outputs.token }}
+          NODE_AUTH_TOKEN: ${{ needs.generate-auth.outputs.bot-token }}
 
       # Let scripts run without the token
       - run: npm rebuild
