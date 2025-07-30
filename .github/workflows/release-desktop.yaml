@@ -78,6 +78,12 @@ jobs:
             echo "✅ Token output is available from step"
             echo "Setting job output..."
             echo "bot-token=${{ steps.app_token.outputs.token }}" >> $GITHUB_OUTPUT
+            echo "✅ Job output set successfully"
+            
+            # Verify the output was set by reading it back
+            echo "🔍 Verifying step output was created:"
+            echo "GITHUB_OUTPUT file contents:"
+            cat $GITHUB_OUTPUT || echo "❌ Could not read GITHUB_OUTPUT file"
           else
             echo "❌ Token output is empty from step"
             exit 1
