@@ -124,7 +124,7 @@ jobs:
           path: dist/
           retention-days: 1
 
-      - name: Debug CrabNebula release command
+      - name: Validate release outputs
         run: |
           echo "generate-release-version outputs v2:"
           echo "release-version: ${{ steps.generate-release-version.outputs.release-version }}"
@@ -132,17 +132,30 @@ jobs:
           echo "release-notes: ${{ steps.generate-release-version.outputs.release-notes }}"
           echo "release-channel: ${{ steps.generate-release-version.outputs.release-channel }}"
 
+          # Validate required outputs
+          if [ -z "${{ steps.generate-release-version.outputs.release-version }}" ]; then
+            echo "❌ Error: release-version is empty"
+            exit 1
+          fi
+
+          if [ -z "${{ steps.generate-release-version.outputs.release-tag }}" ]; then
+            echo "❌ Error: release-tag is empty"
+            exit 1
+          fi
+
+          echo "✅ All required release outputs are present"
+
       - name: Create draft CrabNebula release
         uses: crabnebula-dev/cloud-release@v0.2.0
         id: create-crabnebula-release
-        if: steps.generate-release-version.outputs.release-version != '' && env.IS_PRODUCTION_RELEASE == 'true'
+        if: env.IS_PRODUCTION_RELEASE == 'true'
         with:
           command: release draft ${{ secrets.CN_ORG_NAME }}/${{ secrets.CN_APP_NAME }} ${{ steps.generate-release-version.outputs.release-version }} ${{ env.IS_PRODUCTION_RELEASE != 'true' && '--channel beta' || '' }}
           api-key: ${{ secrets.CN_API_KEY }}
 
       - name: Get CrabNebula release ID
         id: get-crabnebula-release-id
-        if: steps.generate-release-version.outputs.release-version != '' && env.IS_PRODUCTION_RELEASE == 'true'
+        if: env.IS_PRODUCTION_RELEASE == 'true'
         run: echo "release-id=${{ fromJson(steps.create-crabnebula-release.outputs.stdout).id }}" >> $GITHUB_OUTPUT
 
   sync-release-to-main:
