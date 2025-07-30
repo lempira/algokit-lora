@@ -71,6 +71,17 @@ jobs:
         env:
           APP_TOKEN: ${{ steps.app_token.outputs.token }}
 
+      - name: Verify job output is set
+        run: |
+          if [ -n "${{ steps.app_token.outputs.token }}" ]; then
+            echo "✅ Token output is available from step"
+            echo "Setting job output..."
+            echo "bot-token=${{ steps.app_token.outputs.token }}" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Token output is empty from step"
+            exit 1
+          fi
+
   build-tauri:
     name: Build Tauri app
     needs: generate-auth
@@ -82,6 +93,28 @@ jobs:
         platform: [ubuntu-22.04, windows-latest, macos-13, macos-14]
 
     steps:
+      - name: Verify bot token is available
+        run: |
+          echo "🔍 Debugging job dependencies and outputs:"
+          echo "Needs context: ${{ toJSON(needs) }}"
+          echo "Generate-auth result: ${{ needs.generate-auth.result }}"
+          echo "Generate-auth outputs: ${{ toJSON(needs.generate-auth.outputs) }}"
+
+          if [ -z "${{ needs.generate-auth.outputs.bot-token }}" ]; then
+            echo "❌ Bot token is empty or not generated"
+            echo "This means the generate-auth job failed or didn't produce output"
+            echo "Checking if generate-auth job succeeded..."
+            if [ "${{ needs.generate-auth.result }}" != "success" ]; then
+              echo "❌ generate-auth job failed with result: ${{ needs.generate-auth.result }}"
+            fi
+            exit 1
+          else
+            echo "✅ Bot token is available (length: ${#TOKEN})"
+            echo "First 4 characters: ${TOKEN:0:4}..."
+          fi
+        env:
+          TOKEN: ${{ needs.generate-auth.outputs.bot-token }}
+
       - uses: actions/checkout@v4
         with:
           # Use bot token from previous job

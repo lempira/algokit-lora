@@ -232,7 +232,7 @@ jobs:
   release-desktop:
     name: Release Desktop
     needs: [build-and-release]
-    if: github.ref_name == 'release'
+    # if: github.ref_name == 'release'
     uses: ./.github/workflows/release-desktop.yaml
     with:
       version: ${{ needs.build-and-release.outputs.release-version }}
