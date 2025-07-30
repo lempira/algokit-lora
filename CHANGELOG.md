@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.6](https://github.com/lempira/algokit-lora/compare/v2.0.5...v2.0.6) (2025-07-30)
+
+### 🐛 Bug Fixes
+
+* add secrets to workflow_call workflows ([a8d7abd](https://github.com/lempira/algokit-lora/commit/a8d7abde7e3067dc0885ee3076e3a850cf453cde))
+
 ## [2.0.5](https://github.com/lempira/algokit-lora/compare/v2.0.4...v2.0.5) (2025-07-29)
 
 ### 🐛 Bug Fixes
