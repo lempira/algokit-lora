@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.7](https://github.com/lempira/algokit-lora/compare/v2.0.6...v2.0.7) (2025-07-30)
+
+### 🐛 Bug Fixes
+
+* added debuging to test ci ([fa4f891](https://github.com/lempira/algokit-lora/commit/fa4f89117f5be7185dd24dda1f5ee0caa17078d1))
+* added secrets to workflow_call workflows ([a74a63b](https://github.com/lempira/algokit-lora/commit/a74a63b030c2e96dd600e2f92ac3575f83c391f2))
+* created a common bot token generator job ([d20ee5c](https://github.com/lempira/algokit-lora/commit/d20ee5ccb28810902798a46b844cf418412fbc2c))
+* more logging to debug releaes ([8a7c227](https://github.com/lempira/algokit-lora/commit/8a7c2272d1e2664bc8c3738212812dcd1ce65289))
+* reorder steps ([#480](https://github.com/lempira/algokit-lora/issues/480)) ([d5f0d80](https://github.com/lempira/algokit-lora/commit/d5f0d80f1fb102578e3fb41a2766cdca27d5942a))
+
 ## [2.0.6](https://github.com/lempira/algokit-lora/compare/v2.0.5...v2.0.6) (2025-07-30)
 
 ### 🐛 Bug Fixes
