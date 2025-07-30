@@ -36,24 +36,6 @@ on:
         required: true
       BOT_SK:
         required: true
-      APPLE_CERTIFICATE:
-        required: true
-      APPLE_CERTIFICATE_PASSWORD:
-        required: true
-      APPLE_ID:
-        required: true
-      APPLE_PASSWORD:
-        required: true
-      APPLE_TEAM_ID:
-        required: true
-      KEYCHAIN_PASSWORD:
-        required: true
-      TAURI_SIGNING_PRIVATE_KEY:
-        required: true
-      TAURI_SIGNING_PRIVATE_KEY_PASSWORD:
-        required: true
-      TAURI_SIGNING_PUBLIC_KEY:
-        required: true
       CN_ORG_NAME:
         required: true
       CN_APP_NAME:
