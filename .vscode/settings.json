@@ -11,25 +11,5 @@
   },
   "[rust]": {
     "editor.defaultFormatter": "rust-lang.rust-analyzer"
-  },
-  "workbench.colorCustomizations": {
-    "activityBar.activeBackground": "#a1facf",
-    "activityBar.background": "#a1facf",
-    "activityBar.foreground": "#15202b",
-    "activityBar.inactiveForeground": "#15202b99",
-    "activityBarBadge.background": "#c186f9",
-    "activityBarBadge.foreground": "#15202b",
-    "commandCenter.border": "#15202b99",
-    "sash.hoverBorder": "#a1facf",
-    "statusBar.background": "#70f8b7",
-    "statusBar.foreground": "#15202b",
-    "statusBarItem.hoverBackground": "#3ff69e",
-    "statusBarItem.remoteBackground": "#70f8b7",
-    "statusBarItem.remoteForeground": "#15202b",
-    "titleBar.activeBackground": "#70f8b7",
-    "titleBar.activeForeground": "#15202b",
-    "titleBar.inactiveBackground": "#70f8b799",
-    "titleBar.inactiveForeground": "#15202b99"
-  },
-  "peacock.color": "#70f8b7"
+  }
 }
