@@ -55,7 +55,7 @@ jobs:
     name: Generate authentication
     runs-on: ubuntu-latest
     outputs:
-      bot-token: ${{ steps.app_token.outputs.token }}
+      bot-token: ${{ steps.set_output.outputs.bot-token }}
     steps:
       - name: Generate bot token
         uses: actions/create-github-app-token@v1
@@ -71,7 +71,8 @@ jobs:
         env:
           APP_TOKEN: ${{ steps.app_token.outputs.token }}
 
-      - name: Verify job output is set
+      - name: Set job output
+        id: set_output
         run: |
           if [ -n "${{ steps.app_token.outputs.token }}" ]; then
             echo "✅ Token output is available from step"
