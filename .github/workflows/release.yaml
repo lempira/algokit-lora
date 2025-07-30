@@ -126,7 +126,7 @@ jobs:
 
       - name: Validate release outputs
         run: |
-          echo "generate-release-version outputs v2:"
+          echo "generate-release-version outputs:"
           echo "release-version: ${{ steps.generate-release-version.outputs.release-version }}"
           echo "release-tag: ${{ steps.generate-release-version.outputs.release-tag }}"
           echo "release-notes: ${{ steps.generate-release-version.outputs.release-notes }}"
