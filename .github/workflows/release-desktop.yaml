@@ -55,7 +55,7 @@ jobs:
     name: Generate authentication
     runs-on: ubuntu-latest
     outputs:
-      bot-token: ${{ steps.set_output.outputs.bot-token }}
+      bot_token: ${{ steps.set_output.outputs.bot_token }}
     steps:
       - name: Generate bot token
         uses: actions/create-github-app-token@v1
@@ -76,18 +76,25 @@ jobs:
         run: |
           if [ -n "${{ steps.app_token.outputs.token }}" ]; then
             echo "✅ Token output is available from step"
-            echo "Setting job output..."
-            echo "bot-token=${{ steps.app_token.outputs.token }}" >> $GITHUB_OUTPUT
-            echo "✅ Job output set successfully"
+            echo "Token length: ${#TOKEN}"
+            echo "Token starts with: ${TOKEN:0:4}..."
             
-            # Verify the output was set by reading it back
-            echo "🔍 Verifying step output was created:"
-            echo "GITHUB_OUTPUT file contents:"
+            echo "🔍 GITHUB_OUTPUT file before:"
+            cat $GITHUB_OUTPUT 2>/dev/null || echo "(file doesn't exist yet)"
+            
+            echo "Setting job output..."
+            echo "bot_token=${{ steps.app_token.outputs.token }}" >> $GITHUB_OUTPUT
+            
+            echo "🔍 GITHUB_OUTPUT file after:"
             cat $GITHUB_OUTPUT || echo "❌ Could not read GITHUB_OUTPUT file"
+            
+            echo "✅ Job output set successfully"
           else
             echo "❌ Token output is empty from step"
             exit 1
           fi
+        env:
+          TOKEN: ${{ steps.app_token.outputs.token }}
 
   build-tauri:
     name: Build Tauri app
@@ -107,7 +114,7 @@ jobs:
           echo "Generate-auth result: ${{ needs.generate-auth.result }}"
           echo "Generate-auth outputs: ${{ toJSON(needs.generate-auth.outputs) }}"
 
-          if [ -z "${{ needs.generate-auth.outputs.bot-token }}" ]; then
+          if [ -z "${{ needs.generate-auth.outputs.bot_token }}" ]; then
             echo "❌ Bot token is empty or not generated"
             echo "This means the generate-auth job failed or didn't produce output"
             echo "Checking if generate-auth job succeeded..."
@@ -120,12 +127,12 @@ jobs:
             echo "First 4 characters: ${TOKEN:0:4}..."
           fi
         env:
-          TOKEN: ${{ needs.generate-auth.outputs.bot-token }}
+          TOKEN: ${{ needs.generate-auth.outputs.bot_token }}
 
       - uses: actions/checkout@v4
         with:
           # Use bot token from previous job
-          token: ${{ needs.generate-auth.outputs.bot-token }}
+          token: ${{ needs.generate-auth.outputs.bot_token }}
           fetch-depth: 0
 
       - name: Setup node
@@ -139,7 +146,7 @@ jobs:
       - name: Install npm dependencies
         run: npm ci --ignore-scripts
         env:
-          NODE_AUTH_TOKEN: ${{ needs.generate-auth.outputs.bot-token }}
+          NODE_AUTH_TOKEN: ${{ needs.generate-auth.outputs.bot_token }}
 
       # Let scripts run without the token
       - run: npm rebuild
