@@ -55,7 +55,7 @@ jobs:
     name: Generate authentication
     runs-on: ubuntu-latest
     outputs:
-      bot_token: ${{ steps.set_output.outputs.bot_token }}
+      bot_token: ${{ steps.app_token.outputs.token }}
     steps:
       - name: Generate bot token
         uses: actions/create-github-app-token@v1
@@ -64,33 +64,15 @@ jobs:
           app-id: ${{ secrets.BOT_ID }}
           private-key: ${{ secrets.BOT_SK }}
 
-      - name: Debug app token
-        run: |
-          echo "App token length: ${#APP_TOKEN}"
-          echo "First 4 characters: ${APP_TOKEN:0:4}..."
-        env:
-          APP_TOKEN: ${{ steps.app_token.outputs.token }}
-
-      - name: Set job output
-        id: set_output
+      - name: Debug and verify token
         run: |
           if [ -n "${{ steps.app_token.outputs.token }}" ]; then
-            echo "✅ Token output is available from step"
+            echo "✅ Token generated successfully"
             echo "Token length: ${#TOKEN}"
             echo "Token starts with: ${TOKEN:0:4}..."
-            
-            echo "🔍 GITHUB_OUTPUT file before:"
-            cat $GITHUB_OUTPUT 2>/dev/null || echo "(file doesn't exist yet)"
-            
-            echo "Setting job output..."
-            echo "bot_token=${{ steps.app_token.outputs.token }}" >> $GITHUB_OUTPUT
-            
-            echo "🔍 GITHUB_OUTPUT file after:"
-            cat $GITHUB_OUTPUT || echo "❌ Could not read GITHUB_OUTPUT file"
-            
-            echo "✅ Job output set successfully"
+            echo "Job will output this token directly from the action step"
           else
-            echo "❌ Token output is empty from step"
+            echo "❌ Token generation failed"
             exit 1
           fi
         env:
