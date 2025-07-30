@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.8](https://github.com/lempira/algokit-lora/compare/v2.0.7...v2.0.8) (2025-07-30)
+
+### 🐛 Bug Fixes
+
+* removed unneeded env vars for testing ([4081dbd](https://github.com/lempira/algokit-lora/commit/4081dbd709e9a86e637a72bfe3d31c9af7b9857c))
+
 ## [2.0.7](https://github.com/lempira/algokit-lora/compare/v2.0.6...v2.0.7) (2025-07-30)
 
 ### 🐛 Bug Fixes
