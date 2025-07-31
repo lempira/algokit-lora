@@ -105,6 +105,7 @@ jobs:
           private-key: ${{ secrets.BOT_SK }}
 
       - name: Verify bot token is available
+        shell: bash
         run: |
           echo "🔍 Debugging job dependencies and outputs:"
           echo "Needs context: ${{ toJSON(needs) }}"
