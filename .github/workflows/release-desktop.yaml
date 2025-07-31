@@ -43,124 +43,45 @@ on:
       CN_API_KEY:
         required: true
 
+permissions:
+  contents: read
+  packages: read # Required for GitHub Package Registry access
+
 concurrency: build-desktop
 
 env:
   PRODUCTION_RELEASE: ${{ inputs.production-release == 'true' }}
 
 jobs:
-  # Generate bot token once before matrix jobs to avoid simultaneous token generation
-  # which can cause 403 Forbidden errors when multiple jobs try to access GitHub Package Registry
-  generate-auth:
-    name: Generate authentication
-    runs-on: ubuntu-latest
-    outputs:
-      bot_token: ${{ steps.app_token.outputs.token }}
-      test-output: 'hardcoded-test-value'
-    steps:
-      - name: Generate bot token
-        uses: actions/create-github-app-token@v1
-        id: app_token
-        with:
-          app-id: ${{ secrets.BOT_ID }}
-          private-key: ${{ secrets.BOT_SK }}
-
-      - name: Debug action outputs
-        run: |
-          echo "🔍 Available step outputs for app_token:"
-          echo "token: ${{ steps.app_token.outputs.token }}"
-          echo "All step outputs: ${{ toJSON(steps.app_token.outputs) }}"
-
-      - name: Debug and verify token
-        run: |
-          if [ -n "${{ steps.app_token.outputs.token }}" ]; then
-            echo "✅ Token generated successfully"
-            echo "Token length: ${#TOKEN}"
-            echo "Token starts with: ${TOKEN:0:4}..."
-            echo "Job will output this token directly from the action step"
-          else
-            echo "❌ Token generation failed"
-            exit 1
-          fi
-        env:
-          TOKEN: ${{ steps.app_token.outputs.token }}
-
   build-tauri:
     name: Build Tauri app
-    needs: generate-auth
-    # runs-on: ubuntu-latest
     runs-on: ${{ matrix.platform }}
     strategy:
-      max-parallel: 1 # Run jobs sequentially to prevent simultaneous token generation conflicts
       matrix:
         # macos-14 is the Apple Arm runner
         # macos-13 is the Apple Intel runner
         platform: [ubuntu-22.04, windows-latest, macos-13, macos-14]
 
     steps:
-      - name: Generate direct bot token
-        uses: actions/create-github-app-token@v1
-        id: direct_token
-        with:
-          app-id: ${{ secrets.BOT_ID }}
-          private-key: ${{ secrets.BOT_SK }}
-
-      - name: Verify bot token is available
+      - name: Verify GITHUB_TOKEN is available
         shell: bash
         run: |
-          echo "🔍 Debugging job dependencies and outputs:"
-          echo "Needs context: ${{ toJSON(needs) }}"
-          echo "Generate-auth result: ${{ needs.generate-auth.result }}"
-          echo "Generate-auth outputs: ${{ toJSON(needs.generate-auth.outputs) }}"
-
-          echo "🧪 Testing hardcoded output:"
-          echo "test-output: ${{ needs.generate-auth.outputs.test-output }}"
-
-          if [ "${{ needs.generate-auth.outputs.test-output }}" = "hardcoded-test-value" ]; then
-            echo "✅ Hardcoded test output works - job outputs mechanism is functional"
+          echo "🔍 Using built-in GITHUB_TOKEN instead of custom bot token"
+          if [ -n "${{ secrets.GITHUB_TOKEN }}" ]; then
+            echo "✅ GITHUB_TOKEN is available"
+            echo "Token length: ${#GITHUB_TOKEN}"
+            echo "Token starts with: ${GITHUB_TOKEN:0:4}..."
           else
-            echo "❌ Hardcoded test output failed - job outputs mechanism is broken"
-          fi
-
-          echo "🔍 Testing direct token generation:"
-          if [ -n "${{ steps.direct_token.outputs.token }}" ]; then
-            echo "✅ Direct token generated successfully"
-            echo "Direct token length: ${#DIRECT_TOKEN}"
-            echo "Direct token starts with: ${DIRECT_TOKEN:0:4}..."
-          else
-            echo "❌ Direct token generation failed"
-          fi
-
-          echo "🔍 Comparing tokens from different sources:"
-          if [ -z "${{ needs.generate-auth.outputs.bot_token }}" ]; then
-            echo "❌ Job output token is empty or not generated"
-            echo "This means the generate-auth job failed or didn't produce output"
-            echo "Checking if generate-auth job succeeded..."
-            if [ "${{ needs.generate-auth.result }}" != "success" ]; then
-              echo "❌ generate-auth job failed with result: ${{ needs.generate-auth.result }}"
-            fi
-          else
-            echo "✅ Job output token is available (length: ${#JOB_TOKEN})"
-            echo "Job output token starts with: ${JOB_TOKEN:0:4}..."
-          fi
-
-          # Check if we have at least one working token
-          if [ -n "${{ steps.direct_token.outputs.token }}" ]; then
-            echo "✅ We have a working direct token - proceeding with that"
-          elif [ -n "${{ needs.generate-auth.outputs.bot_token }}" ]; then
-            echo "✅ We have a working job output token - proceeding with that"
-          else
-            echo "❌ No working tokens available - failing"
+            echo "❌ GITHUB_TOKEN is not available"
             exit 1
           fi
         env:
-          JOB_TOKEN: ${{ needs.generate-auth.outputs.bot_token }}
-          DIRECT_TOKEN: ${{ steps.direct_token.outputs.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: actions/checkout@v4
         with:
-          # Use direct bot token generated in this job (fallback to job token if needed)
-          token: ${{ steps.direct_token.outputs.token }}
+          # Use built-in GITHUB_TOKEN instead of custom bot token
+          token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
       - name: Setup node
@@ -174,7 +95,7 @@ jobs:
       - name: Install npm dependencies
         run: npm ci --ignore-scripts
         env:
-          NODE_AUTH_TOKEN: ${{ steps.direct_token.outputs.token }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # Let scripts run without the token
       - run: npm rebuild
