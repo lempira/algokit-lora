@@ -97,6 +97,13 @@ jobs:
     #     platform: [ubuntu-22.04, windows-latest, macos-13, macos-14]
 
     steps:
+      - name: Generate direct bot token
+        uses: actions/create-github-app-token@v1
+        id: direct_token
+        with:
+          app-id: ${{ secrets.BOT_ID }}
+          private-key: ${{ secrets.BOT_SK }}
+
       - name: Verify bot token is available
         run: |
           echo "🔍 Debugging job dependencies and outputs:"
@@ -113,20 +120,40 @@ jobs:
             echo "❌ Hardcoded test output failed - job outputs mechanism is broken"
           fi
 
+          echo "🔍 Testing direct token generation:"
+          if [ -n "${{ steps.direct_token.outputs.token }}" ]; then
+            echo "✅ Direct token generated successfully"
+            echo "Direct token length: ${#DIRECT_TOKEN}"
+            echo "Direct token starts with: ${DIRECT_TOKEN:0:4}..."
+          else
+            echo "❌ Direct token generation failed"
+          fi
+
+          echo "🔍 Comparing tokens from different sources:"
           if [ -z "${{ needs.generate-auth.outputs.bot_token }}" ]; then
-            echo "❌ Bot token is empty or not generated"
+            echo "❌ Job output token is empty or not generated"
             echo "This means the generate-auth job failed or didn't produce output"
             echo "Checking if generate-auth job succeeded..."
             if [ "${{ needs.generate-auth.result }}" != "success" ]; then
               echo "❌ generate-auth job failed with result: ${{ needs.generate-auth.result }}"
             fi
-            exit 1
           else
-            echo "✅ Bot token is available (length: ${#TOKEN})"
-            echo "First 4 characters: ${TOKEN:0:4}..."
+            echo "✅ Job output token is available (length: ${#JOB_TOKEN})"
+            echo "Job output token starts with: ${JOB_TOKEN:0:4}..."
+          fi
+
+          # Check if we have at least one working token
+          if [ -n "${{ steps.direct_token.outputs.token }}" ]; then
+            echo "✅ We have a working direct token - proceeding with that"
+          elif [ -n "${{ needs.generate-auth.outputs.bot_token }}" ]; then
+            echo "✅ We have a working job output token - proceeding with that"
+          else
+            echo "❌ No working tokens available - failing"
+            exit 1
           fi
         env:
-          TOKEN: ${{ needs.generate-auth.outputs.bot_token }}
+          JOB_TOKEN: ${{ needs.generate-auth.outputs.bot_token }}
+          DIRECT_TOKEN: ${{ steps.direct_token.outputs.token }}
 
       - uses: actions/checkout@v4
         with:
